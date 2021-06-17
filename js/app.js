@@ -2,7 +2,8 @@
 
 let addBtn = document.getElementById('addBtn');
 addBtn.addEventListener('click',(e)=>{
-    let newTextEntered = document.getElementById('addText');
+    let newTextEntered = document.getElementById('addText').value;
+    let newTextEnteredTitle = document.getElementById('addTitle').value;
     let storedNotes = localStorage.getItem("notes");
     if(storedNotes){
         noteObject=JSON.parse(storedNotes);
@@ -11,7 +12,7 @@ addBtn.addEventListener('click',(e)=>{
         noteObject=[];
 
     }
-    noteObject.push(newTextEntered.value);
+    noteObject.push({'Title':newTextEnteredTitle,'Data':newTextEntered});
     localStorage.setItem("notes",JSON.stringify(noteObject));
     newTextEntered.value="";
     reloadUserNotes();
@@ -32,10 +33,11 @@ function reloadUserNotes(){
 
     if( storedNotes && storedNotes.length>0){
     noteObject.forEach((element,index) => {
+        
         html+=`<div class="noteCard card my-2 mx-2" style="width: 18rem;">
         <div class="card-body">
-          <h5 class="card-title">Note ${index+1}</h5>
-          <p class="card-text">${element}</p>
+          <h5 class="card-title">Note ${element.Title}</h5>
+          <p class="card-text">${element.Data}</p>
           <button class="btn btn-primary" id="${index}" onclick="deleteNote(this.id)" >Delete Note</button>
         </div>
       </div>`;
